@@ -20,7 +20,7 @@ def get_board_size():
                 print("Value not in allowed range")
                 continue
         else:
-            print("Wrong format")
+            print("Format error")
             continue
 
 
@@ -37,12 +37,40 @@ def print_board(board, size):
        for cell in row:
            print(cell, end=' ')
        print()
+    
+    print()
 
 def get_move(board, size, state):
-    input("\n{}'s next move: ".format('X' if state == X_TURN else 'O'))
+
+    while(1):
+        move = input("{}'s next move: ".format('X' if state == X_TURN else 'O'))
+        col = move[0].upper()
+        row = move[1:]
+        if(col.isalpha() and row.isdigit()):
+            col_num = string.ascii_uppercase.index(col)
+            row_num = int(row)
+            if(col_num < size and row_num < size):
+                if(board[row_num][col_num-1] == '.'):
+                    board[row_num][col_num-1] = 'X' if state == X_TURN else 'O'
+                    state = X_TURN if state == O_TURN else O_TURN
+                    return
+                else:
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print_board(board, size)
+                    print("Illegal move, enter again", end=' ')
+            else:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print_board(board, size)
+                print("Value out of range, enter again", end=' ')
+        else:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print_board(board, size)
+            print("Format error, enter again", end=' ')
+
 
 def step_board(board, size, state):
     pass
+
 
 def main():
 
