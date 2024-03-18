@@ -40,7 +40,7 @@ def print_board(board, size):
     
     print()
 
-def get_move(board, size, state):
+def step_board(board, size, state):
 
     while(1):
         move = input("{}'s next move: ".format('X' if state == X_TURN else 'O'))
@@ -48,11 +48,10 @@ def get_move(board, size, state):
         row = move[1:]
         if(col.isalpha() and row.isdigit()):
             col_num = string.ascii_uppercase.index(col)
-            row_num = int(row)
-            if(col_num < size and row_num < size):
-                if(board[row_num][col_num-1] == '.'):
-                    board[row_num][col_num-1] = 'X' if state == X_TURN else 'O'
-                    state = X_TURN if state == O_TURN else O_TURN
+            row_num = int(row) - 1
+            if(col_num in range(0,size) and row_num in range(0,size)):
+                if(board[row_num][col_num] == '.'):
+                    board[row_num][col_num] = 'X' if state == X_TURN else 'O'
                     return
                 else:
                     os.system('cls' if os.name == 'nt' else 'clear')
@@ -68,8 +67,17 @@ def get_move(board, size, state):
             print("Format error, enter again", end=' ')
 
 
-def step_board(board, size, state):
-    pass
+def check_state(board, size, state):
+
+    #Check horizontals
+    for row in board:
+        for pos,cell in enumerate board[:-2]:
+            if()
+
+
+
+
+    return state
 
 
 def main():
@@ -85,13 +93,15 @@ def main():
 
     # Create nested list for storing board state
     board = [['.'] * size for _ in range(size)]
+    print_board(board, size)
     state = X_TURN
 
     while(state == X_TURN or state == O_TURN):
+        step_board(board, size, state)
+        state = (X_TURN if state == O_TURN else O_TURN)
         os.system('cls' if os.name == 'nt' else 'clear')
         print_board(board, size)
-        get_move(board, size, state)
-        step_board(board, size, state)
+        state = check_state(board, size, state)
 
     if(X_WON):
         print("X won the game, congratulations")
@@ -102,5 +112,5 @@ def main():
 
 
 
-
-main()
+if __name__ == "__main__":
+    main()
