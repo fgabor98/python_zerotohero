@@ -40,6 +40,7 @@ def print_board(board, size):
     
     print()
 
+
 def step_board(board, size, state):
 
     while(1):
@@ -67,16 +68,31 @@ def step_board(board, size, state):
             print("Format error, enter again", end=' ')
 
 
+LENGTH=5
 def check_state(board, size, state):
 
-    #Check horizontals
-    for row in board:
-        for pos,cell in enumerate board[:-2]:
-            if()
-
-
-
-
+    for (posY,row) in enumerate(board[:-(LENGTH-1)]):
+        for (posX,cell) in enumerate(row[:-(LENGTH-1)]):
+            #Check horizontal
+            check_hor = []
+            check_ver = []
+            check_diag = []
+            for i in range(0,LENGTH):
+                check_hor.append(board[posY][posX+i])
+                check_ver.append(board[posY+i][posX])
+                check_diag.append(board[posY+i][posX+i])
+            if all(element == 'X' for element in check_hor):
+                return X_WON
+            if all(element == 'X' for element in check_ver):
+                return X_WON
+            if all(element == 'X' for element in check_diag):
+                return X_WON
+            if all(element == 'O' for element in check_hor):
+                return O_WON
+            if all(element == 'O' for element in check_ver):
+                return O_WON
+            if all(element == 'O' for element in check_diag):
+                return O_WON
     return state
 
 
@@ -103,13 +119,10 @@ def main():
         print_board(board, size)
         state = check_state(board, size, state)
 
-    if(X_WON):
+    if(state == X_WON):
         print("X won the game, congratulations")
     else:
         print("O won the game, congratulations")
-
-
-
 
 
 if __name__ == "__main__":
