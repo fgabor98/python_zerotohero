@@ -71,27 +71,38 @@ def step_board(board, size, state):
 LENGTH=5
 def check_state(board, size, state):
 
-    for (posY,row) in enumerate(board[:-(LENGTH-1)]):
-        for (posX,cell) in enumerate(row[:-(LENGTH-1)]):
+    for (posY,row) in enumerate(board):
+        for (posX,cell) in enumerate(row):
             #Check horizontal
             check_hor = []
             check_ver = []
-            check_diag = []
+            check_diag_right = []
+            check_diag_left = []
             for i in range(0,LENGTH):
-                check_hor.append(board[posY][posX+i])
-                check_ver.append(board[posY+i][posX])
-                check_diag.append(board[posY+i][posX+i])
-            if all(element == 'X' for element in check_hor):
+                if(posX < size - LENGTH + 1):
+                    check_hor.append(board[posY][posX+i])
+                if(posY < size - LENGTH + 1):
+                    check_ver.append(board[posY+i][posX])
+                if(posX < size - LENGTH + 1 and posY < size - LENGTH + 1):
+                    check_diag_right.append(board[posY+i][posX+i])
+                if(posX >= LENGTH - 1 and posY < size - LENGTH + 1):
+                    check_diag_left.append(board[posY+i][posX-i])
+
+            if (len(check_hor) > 0 and all(element == 'X' for element in check_hor)):
                 return X_WON
-            if all(element == 'X' for element in check_ver):
+            if (len(check_ver) > 0 and all(element == 'X' for element in check_ver)):
                 return X_WON
-            if all(element == 'X' for element in check_diag):
+            if (len(check_diag_right) > 0 and all(element == 'X' for element in check_diag_right)):
                 return X_WON
-            if all(element == 'O' for element in check_hor):
+            if (len(check_diag_left) > 0 and all(element == 'X' for element in check_diag_left)):
+                return X_WON
+            if (len(check_hor) > 0 and all(element == 'O' for element in check_hor)):
                 return O_WON
-            if all(element == 'O' for element in check_ver):
+            if (len(check_ver) > 0 and all(element == 'O' for element in check_ver)):
                 return O_WON
-            if all(element == 'O' for element in check_diag):
+            if (len(check_diag_right) > 0 and all(element == 'O' for element in check_diag_right)):
+                return O_WON
+            if (len(check_diag_left) > 0 and all(element == 'O' for element in check_diag_left)):
                 return O_WON
     return state
 
@@ -100,6 +111,7 @@ def main():
 
     # Print title
     print("Advanced TicTacToe Game")
+    print("First player to get 5 symbols connected in a row, column or diagonal, wins")
 
     # Set the board size from user input
     size = get_board_size()
