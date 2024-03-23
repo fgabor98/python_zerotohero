@@ -110,7 +110,7 @@ def check_state(board, size, state):
 def main():
 
     # Print title
-    print("Advanced TicTacToe Game")
+    print("Gomoku Game (5 in a row)")
     print("First player to get 5 symbols connected in a row, column or diagonal, wins")
 
     # Set the board size from user input
