@@ -11,10 +11,10 @@ O_WON = 3
 
 def get_board_size():
 
-    while(1):
+    while True:
         size_in = input("Select board size (between {} and {}): ".format(MIN_SIZE, MAX_SIZE))
-        if(size_in.isdigit()):
-            if(int(size_in) in range(MIN_SIZE,MAX_SIZE+1)):
+        if size_in.isdigit():
+            if int(size_in) in range(MIN_SIZE,MAX_SIZE+1):
                 return int(size_in)
             else:
                 print("Value not in allowed range")
@@ -33,17 +33,17 @@ def print_board(board, size):
     print('\n    ' + '_' * (size * 2 + 1))
 
     for (num,row) in enumerate(board):
-       print('{:>2}  |'.format(num+1), end=' ')
-       for cell in row:
-           print(cell, end=' ')
-       print()
-    
+        print('{:>2}  |'.format(num+1), end=' ')
+        for cell in row:
+            print(cell, end=' ')
+        print()
+
     print()
 
 
 def step_board(board, size, state):
 
-    while(1):
+    while True:
         move = input("{}'s next move: ".format('X' if state == X_TURN else 'O'))
         col = move[0].upper()
         row = move[1:]
@@ -51,7 +51,7 @@ def step_board(board, size, state):
             col_num = string.ascii_uppercase.index(col)
             row_num = int(row) - 1
             if(col_num in range(0,size) and row_num in range(0,size)):
-                if(board[row_num][col_num] == '.'):
+                if board[row_num][col_num] == '.':
                     board[row_num][col_num] = 'X' if state == X_TURN else 'O'
                     return
                 else:
@@ -71,22 +71,22 @@ def step_board(board, size, state):
 LENGTH=5
 def check_state(board, size, state):
 
-    for (posY,row) in enumerate(board):
-        for (posX,cell) in enumerate(row):
+    for (pos_y,row) in enumerate(board):
+        for (pos_x,_) in enumerate(row):
             #Check horizontal
             check_hor = []
             check_ver = []
             check_diag_right = []
             check_diag_left = []
             for i in range(0,LENGTH):
-                if(posX < size - LENGTH + 1):
-                    check_hor.append(board[posY][posX+i])
-                if(posY < size - LENGTH + 1):
-                    check_ver.append(board[posY+i][posX])
-                if(posX < size - LENGTH + 1 and posY < size - LENGTH + 1):
-                    check_diag_right.append(board[posY+i][posX+i])
-                if(posX >= LENGTH - 1 and posY < size - LENGTH + 1):
-                    check_diag_left.append(board[posY+i][posX-i])
+                if(pos_x < size - LENGTH + 1):
+                    check_hor.append(board[pos_y][pos_x+i])
+                if(pos_y < size - LENGTH + 1):
+                    check_ver.append(board[pos_y+i][pos_x])
+                if(pos_x < size - LENGTH + 1 and pos_y < size - LENGTH + 1):
+                    check_diag_right.append(board[pos_y+i][pos_x+i])
+                if(pos_x >= LENGTH - 1 and pos_y < size - LENGTH + 1):
+                    check_diag_left.append(board[pos_y+i][pos_x-i])
 
             if (len(check_hor) > 0 and all(element == 'X' for element in check_hor)):
                 return X_WON
@@ -124,14 +124,14 @@ def main():
     print_board(board, size)
     state = X_TURN
 
-    while(state == X_TURN or state == O_TURN):
+    while state in (X_TURN, O_TURN):
         step_board(board, size, state)
         state = (X_TURN if state == O_TURN else O_TURN)
         os.system('cls' if os.name == 'nt' else 'clear')
         print_board(board, size)
         state = check_state(board, size, state)
 
-    if(state == X_WON):
+    if state == X_WON:
         print("X won the game, congratulations")
     else:
         print("O won the game, congratulations")
